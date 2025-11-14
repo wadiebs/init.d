@@ -33,7 +33,7 @@ exec_script_as_default_user
 # Config
 package_name="Cemu"
 package_description="Nintendo Wii U Emulator"
-package_icon_url="https://upload.wikimedia.org/wikipedia/commons/2/25/Cemu_Emulator_icon.png"
+package_icon_url="https://wiki.cemu.info/images/3/32/CemuLogo2.png"
 package_executable="${USER_HOME:?}/Applications/${package_name,,}.AppImage"
 package_category="Game"
 print_package_name
