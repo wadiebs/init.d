@@ -97,13 +97,17 @@ function ensure_icon_exists {
     if [[ ! -f "${__package_icon_path:?}" && "X${__input_icon_url:-}" != "X" ]]; then
         # Temporary directory for download
         local __temp_dir="$(mktemp -d)"
-        wget -O "${__temp_dir:?}/${__input_icon_name:?}.png" \
+        # Attempt to download the icon, but don't fail if it doesn't work
+        if wget -O "${__temp_dir:?}/${__input_icon_name:?}.png" \
             --quiet -o /dev/null \
             --no-verbose --show-progress \
             --progress=bar:force:noscroll \
-            "${__input_icon_url:?}"
-        # Install the icon
-        install_xdg_icon "${__input_icon_name:?}" "${__temp_dir:?}/${__input_icon_name:?}.png"
+            "${__input_icon_url:?}" 2>/dev/null; then
+            # Install the icon
+            install_xdg_icon "${__input_icon_name:?}" "${__temp_dir:?}/${__input_icon_name:?}.png"
+        else
+            print_step_error "Failed to download icon from ${__input_icon_url:?} — continuing without icon."
+        fi
         # Remove temp dir
         rm -rf "${__temp_dir:?}"
     fi

@@ -31,7 +31,7 @@ exec_script_as_default_user
 # Config
 package_name="EmulationStation-DE"
 package_description="EmulationStation Desktop Edition (ES-DE) is a frontend for browsing and launching games from your multi-platform game collection."
-package_icon_url="https://es-de.org/____impro/1/onewebmedia/ES-DE_logo.png?etag=%22621b-60428790%22&sourceContentType=image%2Fpng"
+package_icon_url="https://impro.usercontent.one/appid/oneComWsb/domain/es-de.org/media/es-de.org/onewebmedia/ES-DE_logo.png?etag=%226071-6041244a%22&sourceContentType=image%2Fpng&ignoreAspectRatio&resize=240%2B168"
 package_executable="${USER_HOME:?}/.local/bin/${package_name:?}.AppImage"
 package_category="Game"
 print_package_name
@@ -105,10 +105,13 @@ fi
 
 # Configure EmulationStation DE defaults
 if [ ! -f "${USER_HOME:?}/ES-DE/settings/es_settings.xml" ]; then
+    mkdir -p "${USER_HOME:?}/ES-DE/settings"
     cat <<EOF >"${USER_HOME:?}/ES-DE/settings/es_settings.xml"
-<?xml version="1.0"?>
-<string name="MediaDirectory" value="${downloaded_media_path:?}" />
-<string name="ROMDirectory" value="${roms_path:?}/" />
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <string name="MediaDirectory" value="${downloaded_media_path:?}" />
+    <string name="ROMDirectory" value="${roms_path:?}/" />
+</config>
 EOF
 fi
 
