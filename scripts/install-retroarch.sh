@@ -33,11 +33,11 @@ exec_script_as_default_user
 
 
 # Config
-package_name="RetroArch-Linux"
+package_name="RetroArch"
 package_description="Multi System Emulator"
 package_icon_url="https://cdn2.steamgriddb.com/file/sgdb-cdn/icon/b36fd154dd0df788b77b7cfe39200ba3.png"
-package_executable="${USER_HOME:?}/.local/bin/${package_name:?}.AppImage"
-package_category="Game"
+package_executable="${USER_HOME:?}/.local/bin/RetroArch-Linux.AppImage"
+package_category="Game;Emulator"
 print_package_name
 
 
@@ -120,16 +120,17 @@ if ([ ! -f "${package_executable:?}" ] || [ "${__installed_version:-X}" != "${__
 
     popd &> /dev/null || { echo "Error: Failed to pop directory out of ${__download_dir:?}"; exit 1; }
 
-    # Ensure this package has a start menu link (will create it if missing)
-    print_step_header "Ensuring menu shortcut is present for ${package_name:?}"
-    rm -f "${USER_HOME:?}/.local/share/applications/${package_name:?}.desktop"
-    ensure_menu_shortcut
-
     # Mark this version as installed
     catalog -s ${package_name,,} ${__latest_package_version:?}
 else
     print_step_header "Latest version of ${package_name:?} version ${__latest_package_version:?} already installed"
 fi
+
+# Ensure this package has a start menu link (will create it if missing)
+print_step_header "Ensuring menu shortcut is present for ${package_name:?}"
+rm -f "${USER_HOME:?}/.local/share/applications/RetroArch-Linux.desktop"
+rm -f "${USER_HOME:?}/.local/share/applications/${package_name:?}.desktop"
+ensure_menu_shortcut
 
 # Generate RetroArch Emulation directory structure
 __emulation_path="/mnt/games/Emulation"
@@ -179,5 +180,9 @@ video_driver = "vulkan"
 video_fullscreen = "true"
 EOF
 fi
+
+# Configure Sunshine entry
+print_step_header "Adding sunshine entry for ${package_name:?}"
+ensure_sunshine_detached_command_entry "/usr/bin/sunshine-run ${package_executable:?}"
 
 echo "DONE"
